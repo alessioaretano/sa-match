@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# sa-match
 
-## Getting Started
+Internes CV-Job-Match-Tool im SalesAhead-Branding. Nutzt die Anthropic Claude API.
 
-First, run the development server:
+## Setup lokal
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Repo clonen, Dependencies installieren:
+   ```bash
+   git clone <repo>
+   cd sa-match
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. `.env.local` anlegen (basierend auf `.env.local.example`):
+   - `ANTHROPIC_API_KEY` — von https://console.anthropic.com/settings/keys
+   - `AUTH_SECRET` — beliebiger zufälliger String (`openssl rand -base64 32`)
+   - `APP_PASSWORD` — dein Login-Passwort
+   - Optional lokal: `AUTH_DISABLED=true` umgeht das Login
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Dev-Server starten:
+   ```bash
+   npm run dev
+   ```
+   → http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Mandate
 
-## Learn More
+Liegen in `mandates/<YYYY-MM>_<firma>-<rolle>/`:
+- `meta.json` — Pflicht (title, company, language, status, createdAt)
+- `description.md` — Pflicht
+- `original.pdf` — optional
 
-To learn more about Next.js, take a look at the following resources:
+Neue Mandate entweder direkt als Files committen, oder via `/mandate/neu` (nur wenn `GITHUB_TOKEN` etc. konfiguriert).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy auf Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. GitHub-Repo (privat!) erstellen + push
+2. https://vercel.com/new → Repo importieren
+3. Environment Variables setzen (siehe `.env.local.example`)
+4. Optional: Storage → KV-Database hinzufügen für persistente Match-History
+5. Deploy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Wichtig in Production:**
+- `AUTH_DISABLED` NICHT setzen
+- `APP_PASSWORD` mit langem Wert
+- Spending-Cap auf https://console.anthropic.com/settings/limits

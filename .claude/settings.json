@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run start)",
+      "Bash(npm run typecheck)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push)",
+      "Bash(git push origin *)",
+      "Bash(rm /Users/alessioaretano/projects/sa-match/*)",
+      "Bash(curl -s http://localhost:*)",
+      "Bash(curl -sf http://localhost:*)",
+      "Bash(curl -I http://localhost:*)",
+      "Bash(curl http://localhost:*)",
+      "Bash(curl -s -o /dev/null *)",
+      "Bash(mkdir -p *)",
+      "Bash(cp *)",
+      "Bash(cp -R *)"
+    ]
+  }
+}
