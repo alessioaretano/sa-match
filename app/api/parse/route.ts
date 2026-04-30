@@ -16,14 +16,10 @@ export async function POST(request: NextRequest) {
 
     let text: string;
     if (name.endsWith(".pdf")) {
-      const { PDFParse } = await import("pdf-parse");
-      const parser = new PDFParse({ data: new Uint8Array(buffer) });
-      try {
-        const result = await parser.getText();
-        text = result.text;
-      } finally {
-        await parser.destroy();
-      }
+      const { extractText, getDocumentProxy } = await import("unpdf");
+      const pdf = await getDocumentProxy(new Uint8Array(buffer));
+      const result = await extractText(pdf, { mergePages: true });
+      text = Array.isArray(result.text) ? result.text.join("\n\n") : result.text;
     } else if (name.endsWith(".docx")) {
       const mammoth = await import("mammoth");
       const result = await mammoth.extractRawText({ buffer });
